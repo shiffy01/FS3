@@ -23,7 +23,7 @@ class Task {
 }
 
 class User {
-    constructor(id, name, tasks) {
+    constructor(id, name) {
         this.id = id;
         this.name = name;
     }

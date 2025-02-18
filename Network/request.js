@@ -41,20 +41,4 @@ class FXMLHttpRequest {
         });
     }
 }
-
-/***
- * usage example in client:
- * const request = new FXMLHttpRequest();
-request.open("POST", "/add-todo");
-
-request.onload = function() {
-    console.log("Server Response:", this.response);
-};
-
-request.onerror = function() {
-    console.log("Error: Request failed");
-};
-
-request.send(JSON.stringify({ id: 1, description: "Complete FAJAX implementation" }));
-
- */
+export default FXMLHttpRequest;
