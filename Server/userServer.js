@@ -4,7 +4,7 @@ function get(){
     //not finished
 }
 function get(id){
-     return getUser(id)
+     return User.getUser(id)
 }
 function post(user){//add new user
     saveToLocalStorage(user.id, user)

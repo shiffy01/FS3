@@ -4,7 +4,7 @@ function get(){
     //not finished
 }
 function get(id){
-     return getTask(String(id))
+     return Task.getTask(String(id))
 }
 function post(task){//add new task
     saveToLocalStorage(String(task.id), task)

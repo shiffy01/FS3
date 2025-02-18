@@ -4,6 +4,22 @@ class Task {
         this.userId = userId;
         this.description = description;
     }
+
+    getTask(id) {
+        const data = JSON.parse(localStorage.getItem(id));
+        if (data) {
+            const task = new Task(data.id, data.userId, data.description);
+            return task;
+        }
+        return null;
+    }
+    toStorage() {
+        return {
+            id: this.id,
+            userId: this.userId,
+            description: this.description
+        };
+    }
 }
 
 class User {
@@ -11,45 +27,28 @@ class User {
         this.id = id;
         this.name = name;
     }
-}
-    // Serialize ToDoItem to a plain object for storage
-  function  toStorage() {
-        return {
-            id: this.id,
-            userId: this.userId,
-            description: this.description
-        };
-    }
 
-
-    // Serialize User to a plain object for storage
-  function  toStorage() {
+    toStorage() {
         return {
             id: this.id,
             name: this.name,
         };
     }
 
+    getUser(id) {
+        const data = JSON.parse(localStorage.getItem(id));
+        if (data) {
+            const user = new User(data.id, data.name);
+            return user;
+        }
+        return null;
+    }
+}
+  
 function saveToLocalStorage(data) {
     localStorage.setItem(data.id, JSON.stringify(data));
 }
 
-function getUser(id) {
-    const data = JSON.parse(localStorage.getItem(id));
-    if (data) {
-        const user = new User(data.id, data.name);
-        return user;
-    }
-    return null;
-}
-function getTask(id) {
-    const data = JSON.parse(localStorage.getItem(id));
-    if (data) {
-        const task = new Task(data.id, data.userId, data.description);
-        return task;
-    }
-    return null;
-}
 function deleteFromLocalStorage(id){
     localStorage.removeItem(id)
 }
