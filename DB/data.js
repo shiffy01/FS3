@@ -1,4 +1,4 @@
-class Task {
+export class Task {
     constructor(id, userId, description) {
         this.id = id;
         this.userId = userId;
@@ -13,27 +13,21 @@ class Task {
         }
         return null;
     }
-    toStorage() {
-        return {
-            id: this.id,
-            userId: this.userId,
-            description: this.description
-        };
-    }
+    // toStorage() {
+    //     return {
+    //         id: this.id,
+    //         userId: this.userId,
+    //         description: this.description
+    //     };
+    // }
 }
 
-class User {
+export class User {
     constructor(id, name) {
         this.id = id;
         this.name = name;
     }
 
-    toStorage() {
-        return {
-            id: this.id,
-            name: this.name,
-        };
-    }
 
     getUser(id) {
         const data = JSON.parse(localStorage.getItem(id));
@@ -45,11 +39,34 @@ class User {
     }
 }
   
-function saveToLocalStorage(data) {
-    localStorage.setItem(data.id, JSON.stringify(data.toStorage()));
+export function saveToLocalStorage(data) {
+    localStorage.setItem(data.id, JSON.stringify(data));
+}
+export function updateId(type_,){
+    item=getItem(type_)
+    if(item==null){
+        if(type_=="user"){
+            localStorage.setItem(type_, 2)
+            return 1
+        }
+        else{//="task"
+            localStorage.setItem(type_, 1002)
+            return 1002
+        }
+    }
+    else{
+        localStorage.setItem(type_, item+1);
+        return item
+    }
 }
 
-function deleteFromLocalStorage(id){
+export function deleteFromLocalStorage(id){
     localStorage.removeItem(id)
 }
-//to prevent confusion, user ids are only text and task ids are stringified numbers
+export function getAllFromLocalStorage(){
+    items=[]
+    for (let i = 0; i < localStorage.length; i++) {
+        items.push(localStorage.getItem(localStorage.key(i)));
+    }
+    return items
+}
