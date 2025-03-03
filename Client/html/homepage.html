@@ -32,6 +32,26 @@
         function removeTask(button) {
             button.parentElement.remove();
         }
+        function addTask() {
+    let input = document.getElementById("taskInput");
+    let taskText = input.value.trim();
+    if (taskText === "") return;
+
+    let li = document.createElement("li");
+    li.innerHTML = `${taskText} <button onclick="removeTask(this)">X</button>`;
+    
+    document.getElementById("taskList").appendChild(li);
+    
+    saveTaskToStorage(taskText); // שמירת המשימה ב-LocalStorage
+    input.value = "";
+}
+
+function saveTaskToStorage(taskText) {
+    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    tasks.push(taskText);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
     </script>
 </body>
 </html>

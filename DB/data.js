@@ -46,7 +46,7 @@ class User {
 }
   
 function saveToLocalStorage(data) {
-    localStorage.setItem(data.id, JSON.stringify(data));
+    localStorage.setItem(data.id, JSON.stringify(data.toStorage()));
 }
 
 function deleteFromLocalStorage(id){

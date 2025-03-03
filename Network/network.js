@@ -1,12 +1,12 @@
 class Network {
-    static sendRequest(request, callback) {
+    static sendRequest(request, callback) {//משמשת כשרת מדומה
         const delay = Math.floor(Math.random() * 2000) + 1000; // השהיה בין 1 ל-3 שניות
         const dropChance = Math.random(); // הסתברות להשמטה
         
         console.log(`Sending request to ${request.url} with ${delay}ms delay...`);
 
         setTimeout(() => {
-            if (dropChance < 0.1) { // לדוגמה, השמטה בהסתברות של 30%
+            if (dropChance < 0.3) { // לדוגמה, השמטה בהסתברות של 30%
                 console.log(`Request to ${request.url} was dropped!`);
                 callback(null, 0);
                 return;
