@@ -1,4 +1,4 @@
-import { deleteFromLocalStorage, saveToLocalStorage, getAllFromLocalStorage, User, getIdFromLocalStorage, updateId } from "../DB/data"
+import { deleteFromLocalStorage, saveToLocalStorage, getAllFromLocalStorage, User, updateId } from "../DB/data"
 
 export class UserServer{
     get(){
