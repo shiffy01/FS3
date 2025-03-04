@@ -1,4 +1,4 @@
-import { getAllFromLocalStorage, saveToLocalStorage, deleteFromLocalStorage, Task, getIdFromLocalStorage, updateId} from "../DB/data"
+import { getAllFromLocalStorage, saveToLocalStorage, deleteFromLocalStorage, Task, updateId} from "../DB/data.js"
 
 export class TaskServer{
     get(){

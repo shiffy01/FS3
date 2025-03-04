@@ -1,9 +1,9 @@
-import { deleteFromLocalStorage, saveToLocalStorage, getAllFromLocalStorage, User, updateId } from "../DB/data"
+import { deleteFromLocalStorage, saveToLocalStorage, getAllFromLocalStorage, User, updateId } from "../DB/data.js"
 
 export class UserServer{
     get(){
         to_return=[]
-        users=getAllFromLocalStorage()
+        let users=getAllFromLocalStorage()
         for (let i = 0; i < users.length; i++) {
             if(typeof users[i]===User)
                 to_return.push(users[i])
@@ -17,8 +17,8 @@ export class UserServer{
     post(user){//add new user
         saveToLocalStorage(updateId("user"), user)
     }
-    put(user){//edit user
-        saveToLocalStorage(user.id, user)
+    put(id, user){//edit user
+        saveToLocalStorage(id, user)
     }
     delete_(id){
         deleteFromLocalStorage(id)

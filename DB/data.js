@@ -23,27 +23,27 @@ export class Task {
 }
 
 export class User {
-    constructor(id, name) {
-        this.id = id;
+    constructor(name, password) {
         this.name = name;
+        this.password=password
     }
 
 
     getUser(id) {
         const data = JSON.parse(localStorage.getItem(id));
         if (data) {
-            const user = new User(data.id, data.name);
+            const user = new User(data.name, data.password);
             return user;
         }
         return null;
     }
 }
   
-export function saveToLocalStorage(data) {
-    localStorage.setItem(data.id, JSON.stringify(data));
+export function saveToLocalStorage(id, data) {
+    localStorage.setItem(id, JSON.stringify(data));
 }
 export function updateId(type_,){
-    item=getItem(type_)
+    const item=localStorage.getItem(type_)
     if(item==null){
         if(type_=="user"){
             localStorage.setItem(type_, 2)
@@ -55,7 +55,7 @@ export function updateId(type_,){
         }
     }
     else{
-        localStorage.setItem(type_, item+1);
+        localStorage.setItem(type_, Number(item)+1);
         return item
     }
 }

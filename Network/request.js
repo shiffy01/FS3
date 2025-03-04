@@ -6,6 +6,10 @@
  * 3 loading
  * 4 done
  */
+
+import { Network } from "./network.js";
+
+
 /**
  * Informational responses (100 – 199)
     Successful responses (200 – 299)
@@ -13,7 +17,7 @@
     Client error responses (400 – 499)
     Server error responses (500 – 599)
  */
-class FXMLHttpRequest {
+export class FXMLHttpRequest {
     constructor() {
         this.url = null;
         this.method = "GET";
@@ -22,18 +26,22 @@ class FXMLHttpRequest {
         this.readyState = 0;
         this.status = 0;
         this.onload = null;
-        this.onerror = null;
+        this.onerror = null
+        this.network=new Network()
     }
-
+    
     open(method, url) {
         if(method!="GET" && method!="PUT" && method!="POST" && method!="DELETE"){
             prompt("error in method")
         }
-        const urlPieces = request.url.split("/"); 
+        const urlPieces = url.split("/"); 
+        if(urlPieces.length<3){
+            prompt("bad url")
+        }
         if(urlPieces[0]!="url" && (urlPieces[1]!="task"|| urlPieces[1]!="user")){
             prompt("error in url syntax")
         }
-        if(urlPieces[2]!=urlPieces[0].toLowerCase()){
+        if(urlPieces[2]!=method.toLowerCase()){
             prompt("mismatch between url and method")
         }
         this.method = method;
@@ -42,7 +50,8 @@ class FXMLHttpRequest {
     }
 
     send(data = null) {
-        if(data==null&& parts[3]?.length==0){
+        const urlPieces = this.url.split("/"); 
+        if(data==null&& urlPieces[3]?.length==0){
             prompt("no data sent!")
         }
         this.data = data;
@@ -54,11 +63,11 @@ class FXMLHttpRequest {
             this.response = response;
             
             if (this.status >= 200 && this.status < 300) {
-                if (this.onload) this.onload();
+                if (this.onload) this.onload(JSON.parse(this.response).data) 
             } else {
                 if (this.onerror) this.onerror();
             }
         });
     }
 }
-export default FXMLHttpRequest;
+
