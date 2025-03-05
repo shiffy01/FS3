@@ -4,7 +4,7 @@ import { FXMLHttpRequest } from './Network/request.js';
 
 export function tryout(){
     const request_ = new FXMLHttpRequest();
-    request_.open("GET", "url/user/get/10");
+    request_.open("GET", "url/task/get");
     
     request_.onload = function() {
         console.log("Server Response:", this.response);
@@ -13,7 +13,8 @@ export function tryout(){
     request_.onerror = function() {
         console.log("Error: Request failed");
     };
-    //const task=new Task()
+    const task=new Task("shiffy", "hw", "qs 1 and 2", false, 3, "task")
+    const user=new User("benzion", "pass5", "user")
     request_.send();
     
 }
@@ -24,8 +25,9 @@ window.tryout = tryout;
 /**
  * V add type property to user and task
  * V add task properties
- * 3. do getall users
- * 4. check task functions
+ * V do getall users
+ * V check task functions
  * 5. figure out why it gives error when everything went well (timeout)
  * 6. fix status
+ * 7.think what functions to add
  */

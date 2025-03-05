@@ -5,19 +5,19 @@ export class UserServer{
         this.user= new User()
     }
     getAll(){
-        let to_return=[]
-        let users=getAllFromLocalStorage()
-        for (let i = 0; i < users.length; i++) {
-            if(users[i]?.propert=="user")
-                to_return.push(users[i])
+        let users=[]
+        let items=getAllFromLocalStorage()
+        for (let i = 0; i < items.length; i++) {
+            if(items[i]?.type_=="user")
+                users.push(items[i])
         }
-        return to_return
+        return users
     }
     get(id){
          return this.user.getUser(id)
     }
     post(user){//add new user
-        saveToLocalStorage(updateId("user"), user)
+        saveToLocalStorage(updateId(), user)
     }
     put(id, user){//edit user
         saveToLocalStorage(id, user)
