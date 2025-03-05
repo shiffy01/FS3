@@ -1,6 +1,9 @@
 import { getAllFromLocalStorage, saveToLocalStorage, deleteFromLocalStorage, Task, updateId} from "../DB/data.js"
 
 export class TaskServer{
+    constructor(){
+        this.task=new Task()
+    }
     get(){
         to_return=[]
         tasks=getAllFromLocalStorage()
@@ -12,7 +15,7 @@ export class TaskServer{
         //this loops through everything twice... fix????
     }
     get(id){
-         return Task.getTask(id)
+         return task.getTask(id)
     }
     post(task){//add new task
         saveToLocalStorage(updateId("task"), task)

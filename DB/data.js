@@ -1,14 +1,19 @@
 export class Task {
-    constructor(id, userId, description) {
-        this.id = id;
+    constructor(userId, title, description,  completed, time, type_) {
         this.userId = userId;
+        this.title = title;
         this.description = description;
+        this.completed = completed;
+        this.time = time;
+        this.type_=type_
     }
 
     getTask(id) {
         const data = JSON.parse(localStorage.getItem(id));
         if (data) {
-            const task = new Task(data.id, data.userId, data.description);
+            const task = new Task(data.userId, data.title, data.description, data.completed,
+                this.time=this.time, this.type_=type_
+            );
             return task;
         }
         return null;
@@ -23,20 +28,20 @@ export class Task {
 }
 
 export class User {
-    constructor(name, password) {
+    constructor(name, password, type_) {
         this.name = name;
         this.password=password
+        this.type_=type_
     }
-
-
     getUser(id) {
         const data = JSON.parse(localStorage.getItem(id));
         if (data) {
-            const user = new User(data.name, data.password);
+            const user = new User(data.id, data.name, data.password, this.type_=this.type_);
             return user;
         }
         return null;
     }
+  
 }
   
 export function saveToLocalStorage(id, data) {
@@ -64,9 +69,9 @@ export function deleteFromLocalStorage(id){
     localStorage.removeItem(id)
 }
 export function getAllFromLocalStorage(){
-    items=[]
+    let items=[]
     for (let i = 0; i < localStorage.length; i++) {
-        items.push(localStorage.getItem(localStorage.key(i)));
+        items.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
     }
     return items
 }

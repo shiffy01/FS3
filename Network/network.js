@@ -21,12 +21,12 @@ export class Network {
         }
         const type_=request.url.split("/")[1]
         if(request.method=="GET"){
-            if(request.data == null){//get all
+            if(request.url.split("/").length <4){//get all
                 if(type_=="task"){
-                    data=taskServer.get()
+                    data=taskServer.getAll()
                 }
                 if(type_=="user"){
-                    data=userServer.get()
+                    data=userServer.getAll()
                 }
             }
             else{
@@ -81,7 +81,5 @@ export class Network {
 
 //things to do
 /**
- * 4. clean up
  * 6. see if can fix repetitiveness of calling servers
- * 8. send back response
  **/
