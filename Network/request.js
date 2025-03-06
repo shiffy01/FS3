@@ -1,11 +1,4 @@
-/**
- * ready state:
- * 0 start
- * 1 opened
- * 2 sent
- * 3 loading
- * 4 done
- */
+
 
 import { Network } from "./network.js";
 
@@ -46,22 +39,21 @@ export class FXMLHttpRequest {
         }
         this.method = method;
         this.url = url;
-        this.readyState = 1; // Opened
+        this.readyState = 1; // opened
     }
 
     send(data = null) {
         const urlPieces = this.url.split("/"); 
-        if(data==null&& urlPieces[3]?.length==0){
+        if(data==null&& urlPieces[3]?.length==undefined){
             prompt("no data sent!")
         }
         this.data = data;
-        this.readyState = 2; // Sent
-        
+        this.readyState = 2; //sent
+        this.readyState=3 //loading
         Network.sendRequest(this, (response, status) => {
-            this.status=3
             this.status = status;
             this.response = response;
-            
+            this.readyState=4 //done
             if (this.status >= 200 && this.status < 300) {
                 if (this.onload) this.onload(JSON.parse(this.response).data) 
             } else {
