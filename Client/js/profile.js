@@ -17,14 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("profileUsername").textContent = username;
     document.getElementById("profileEmail").textContent = loggedIn.email || "Not provided";
 
-    // Populate activity list
-    const activityList = document.getElementById("activityList");
-    const activities = userStats[username]?.activities || ["No recent activities found."];
-    activities.forEach(activity => {
-        const li = document.createElement("li");
-        li.textContent = activity;
-        activityList.appendChild(li);
-    });
 });
 
 function logout() {
@@ -33,8 +25,6 @@ function logout() {
     window.location.href = "login.html";
 }
 function goToToDoList() {
-    alert("username");
-
-    window.location.href = "homepage.html"; // מעבר לדף המשימות
+     window.location.href = "homepage.html"; // מעבר לדף המשימות
 }
 

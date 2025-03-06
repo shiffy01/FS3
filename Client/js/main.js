@@ -3,269 +3,168 @@ document.addEventListener("DOMContentLoaded", function() {
     loadTasksFromStorage();
 });
 
+
+document.addEventListener("DOMContentLoaded", function () {
+    const username = localStorage.getItem("username") || "Guest";
+    document.getElementById("profileUsername").textContent = username;
+
+    const profilePic = localStorage.getItem("profilePic");
+    if (profilePic) {
+        document.getElementById("profilePic").src = profilePic;
+    }
+});
+
+document.getElementById("taskTime").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        addTask();
+    }
+});
+
+document.getElementById("taskInput").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        addTask();
+    }
+});
+
+
+
 function checkUserSession() {
-    const currentUser = localStorage.getItem("currentUser");
+    const currentUser = localStorage.getItem("username");
     if (!currentUser) {
-        alert(((`${currentUser}`)));//מחזיר לי null
-        //window.location.href = "login.html"; // אם אין משתמש מחובר, להפנות לדף התחברות
+       alert("אין משתמש מחובר!");
+         window.location.href = "login.html"; // הפנייה לדף ההתחברות
     }
-}
 
-
-
-
-
-
-
-
-
-
-
-/*function addTask() {
-    let input = document.getElementById("taskInput");
-    let taskText = input.value.trim();
-    if (taskText === "") return;
-
-    let li = document.createElement("li");
-    li.innerHTML = `${taskText} <button onclick="removeTask(this) class="x">X</button> `;
-
-    document.getElementById("taskList").appendChild(li);
-    saveTaskToStorage(taskText); // שמירת המשימה ב-LocalStorage
-    input.value = "";
 }
 
 function addTask() {
     let input = document.getElementById("taskInput");
     let taskText = input.value.trim();
     if (taskText === "") return;
-    
-    const currentUser = localStorage.getItem("currentUser");
+
+    let timeInput = document.getElementById("taskTime").value.trim() || "";
+    if (taskText === "" || timeInput === "") return; // לוודא ששני השדות מלאים
+
+
+    const currentUser = localStorage.getItem("username");
+
     let tasks = JSON.parse(localStorage.getItem(`tasks_${currentUser}`)) || [];
     const taskId = Date.now();
-    let task = { id: taskId, text: taskText };
+    
+    let task = { 
+        id: taskId, 
+        text: taskText, 
+        completed: false, // משימה חדשה = לא בוצעה עדיין
+        time: timeInput // הוספת משך הזמן למשימה
+
+    };
+    
     tasks.push(task);
     localStorage.setItem(`tasks_${currentUser}`, JSON.stringify(tasks));
-    
+    document.getElementById("taskTime").value = "";
     renderTask(task);
     input.value = "";
 }
-*/
-function addTask() {
-    let input = document.getElementById("taskInput");
-    let taskText = input.value.trim();
-    if (taskText === "") return;
-    
-    const currentUser = localStorage.getItem("currentUser");
-    let tasks = JSON.parse(localStorage.getItem(`tasks_${currentUser}`)) || [];
-    const taskId = Date.now();
-    let task = { id: taskId, text: taskText };
-    tasks.push(task);
-    localStorage.setItem(`tasks_${currentUser}`, JSON.stringify(tasks));
-    
-   /* let li = document.createElement("li");
-   li.innerHTML = `
-        <input type="checkbox" onclick="toggleTaskStatus(this) ">
-        ${taskText} 
-        <button onclick="removeTask(this)" class="x">X</button>
-        <button onclick="editTask(this)">edit</button>`;
-    
-    document.getElementById("taskList").appendChild(li);
-    */
-    renderTask(task);
-
-    input.value = "";
-}
-function toggleTaskStatus(checkbox) {
-    let li = checkbox.parentElement;
-    if (checkbox.checked) {
-        li.style.textDecoration = "line-through"; // מוסיף קו חוצה
-        li.style.color = "gray"; // משנה גם את הצבע לאפור
-        //לסמן בלוקאל סטורג' את מצב המשימה
-    } else {
-        li.style.textDecoration = "none"; // מבטל את הקו החוצה
-        li.style.color = "black";
-      //לסמן בלוקאל סטורג' את מצב המשימה
-
-    }
-}
-/*function finishedTask(button) {
-    let li = button.parentElement;
-    button.remove(); // מסיר את כפתור הסימון
-    document.getElementById("completedTasks").appendChild(li);
-    saveCompletedTaskToStorage(li.innerText);
-    // <button onclick="finishedTask()">V</button>
-    // <button onclick="editTask()">edit</button>
-}
-function removeTask(button) {
-    button.parentElement.remove();
-}
-*/
-/*function saveTaskToStorage(taskText) {
-    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    tasks.push(taskText);
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-}*/
-
-
 
 function removeTask(button, taskId) {
-    const currentUser = localStorage.getItem("currentUser");
+    const currentUser = localStorage.getItem("username");
     let tasks = JSON.parse(localStorage.getItem(`tasks_${currentUser}`)) || [];
+
     tasks = tasks.filter(task => task.id !== taskId);
-    localStorage.setItem(`tasks_${currentUser}`, JSON.stringify(tasks)); 
+    localStorage.setItem(`tasks_${currentUser}`, JSON.stringify(tasks));
+
     button.parentElement.remove();
 }
 
 function loadTasksFromStorage() {
-    const currentUser = localStorage.getItem("currentUser");
+    const currentUser = localStorage.getItem("username");
     let tasks = JSON.parse(localStorage.getItem(`tasks_${currentUser}`)) || [];
+
+    document.getElementById("taskList").innerHTML = ""; // ניקוי הרשימה
     tasks.forEach(task => renderTask(task));
 }
 
+document.addEventListener("change", function(event) {
+    if (event.target.classList.contains("custom-checkbox")) {
+        const checkbox = event.target;
+        const li = checkbox.parentElement;
+        const taskId = parseInt(checkbox.dataset.taskId); // ✅ ממירים למספר
+        toggleTaskStatus(taskId, checkbox.checked);
+
+        li.style.textDecoration = checkbox.checked ? "line-through" : "none";
+        li.style.color = checkbox.checked ? "gray" : "black";
+        li.style.backgroundColor = checkbox.checked ? "lightgray" : "white";
+        
+    }
+});
+
 function renderTask(task) {
     let li = document.createElement("li");
+
     let checkbox = document.createElement("input");
     checkbox.type = "checkbox";
-    checkbox.classList.add("custom-checkbox"); // הוספת class
+    checkbox.classList.add("custom-checkbox");
+    checkbox.checked = task.completed; 
+    checkbox.dataset.taskId = task.id; 
+
     li.appendChild(checkbox);
-    //checkbox.onclick = function () {
 
-    //li.style.backgroundColor = checkbox.checked ? "grey" : "white";
-         //   alert("hvgytrfbesdctfbyhjn");
+// הוספת הטקסט של המשימה
+let taskText = document.createTextNode(` ${task.text}`);
+li.appendChild(taskText);
+ 
 
-   // }
-        //alert("hvgytrfbesdctfbyhjn");
-        //לקשר את הצ'ק בוקס למשימה שלו
-        //לעדכן את המשימה אם היא בוצעה - בקוד
-    
-//לעשות לחצן עריכה.
-   
-    li.innerHTML += ` ${task.text} <button onclick="removeTask(this, ${task.id})" class="x">X</button>`;
+let timeElement = document.createElement("span");
+timeElement.textContent = ` (${task.time})`;
+timeElement.style.fontSize = "12px";
+timeElement.style.color = "gray";
+
+li.appendChild(timeElement);
+
+
+
+// יצירת כפתור ה-X
+let removeButton = document.createElement("button");
+removeButton.textContent = "🗑️ X";
+removeButton.classList.add("x");
+removeButton.onclick = function() {
+    removeTask(removeButton, task.id);
+};
+//הוספת X
+li.appendChild(removeButton);
+
+    if (task.completed) {
+        li.style.textDecoration = "line-through";
+        li.style.backgroundColor = "lightGray";
+        li.style.color ="gray";
+        
+    }
 
     document.getElementById("taskList").appendChild(li);
 }
 
 
-/*function login() {
-    const username = document.getElementById('login-username').value;
-    const password = document.getElementById('login-password').value;
-    
-    if (username && password) {
-        const userData = JSON.parse(localStorage.getItem(username));
-        if (userData && userData.password === password) {
-            localStorage.setItem('currentUser', username);
-            window.location.href = 'profile.html';
-        } else {
-            alert('Invalid username or password');
+function toggleTaskStatus(taskId, isCompleted) {
+    const currentUser = localStorage.getItem("username");
+    let tasks = JSON.parse(localStorage.getItem(`tasks_${currentUser}`)) || [];
+
+    tasks.forEach(task => {
+        if (task.id === taskId) {
+            task.completed = isCompleted; 
         }
-    }
+    });
+    localStorage.setItem(`tasks_${currentUser}`, JSON.stringify(tasks));
 }
 
-function signup() {
-    const username = document.getElementById('signup-username').value;
-    const password = document.getElementById('signup-password').value;
-    
-    if (username && password) {
-        if (localStorage.getItem(username)) {
-            alert('Username already exists!');
-        } else {
-            localStorage.setItem(username, JSON.stringify({ password: password }));
-            alert('Signup successful, please log in.');
-            showLogin();
-        }
-    }
-}*/
-
 function logout() {
-    localStorage.removeItem("currentUser");
+    localStorage.removeItem("username");
     window.location.href = "login.html";
 }
 
-
-
-
-
-
-
-
-/*
-
-
-
-document.addEventListener("DOMContentLoaded", loadTasks);
-
-function getCurrentUser() {
-    return localStorage.getItem("currentUser") || "guest";
+function logout() {
+    localStorage.removeItem("loggedInUser");
+    alert("Logged out successfully!");
+    window.location.href = "login.html";
 }
-
-function addTask() {
-    let input = document.getElementById("taskInput");
-    let taskText = input.value.trim();
-    let category = document.getElementById("taskCategory").value;
-    let duration = document.getElementById("taskDuration").value;
-    let difficulty = document.getElementById("taskDifficulty").value;
-    let user = getCurrentUser();
-
-    if (taskText === "") return;
-
-    let task = {
-        id: Date.now().toString(),
-        text: taskText,
-        category: category || "General",
-        duration: duration || "Unknown",
-        difficulty: difficulty || "Medium",
-        completed: false,
-        user: user
-    };
-    
-    saveTaskToStorage(task);
-    input.value = "";
-    loadTasks();
-}
-
-function saveTaskToStorage(task) {
-    let user = task.user;
-    let tasks = JSON.parse(localStorage.getItem("tasks")) || {};
-    if (!tasks[user]) tasks[user] = [];
-    tasks[user].push(task);
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-}
-
-function loadTasks() {
-    let user = getCurrentUser();
-    let tasks = JSON.parse(localStorage.getItem("tasks")) || {};
-    let userTasks = tasks[user] || [];
-    let taskList = document.getElementById("taskList");
-    taskList.innerHTML = "";
-
-    userTasks.forEach(task => {
-        let li = document.createElement("li");
-        li.innerHTML = `
-            <span class="task-text ${task.completed ? 'completed' : ''}" onclick="toggleTask('${task.id}')">${task.text} (${task.category})</span>
-            <button onclick="removeTask('${task.id}')">X</button>
-        `;
-        taskList.appendChild(li);
-    });
-}
-
-function toggleTask(taskId) {
-    let user = getCurrentUser();
-    let tasks = JSON.parse(localStorage.getItem("tasks")) || {};
-    let userTasks = tasks[user] || [];
-
-    let task = userTasks.find(t => t.id === taskId);
-    if (task) {
-        task.completed = !task.completed;
-        localStorage.setItem("tasks", JSON.stringify(tasks));
-        loadTasks();
-    }
-}
-
-function removeTask(taskId) {
-    let user = getCurrentUser();
-    let tasks = JSON.parse(localStorage.getItem("tasks")) || {};
-    tasks[user] = tasks[user].filter(task => task.id !== taskId);
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-    loadTasks();
-}
-*/
