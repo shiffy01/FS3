@@ -79,7 +79,7 @@ loginForm.addEventListener("submit", function (event) {
     }
 
     // אם התחברות הצליחה
-    if (username && password) {
+    if (username && password){
         setCookie("username", username, 7 * 24 * 60 * 60); // שמירת שם המשתמש ל-7 ימים בעוגייה
         localStorage.setItem("username", user.username);
         // שמירת שם המשתמש המחובר ב-localStorage
