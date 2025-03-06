@@ -20,9 +20,21 @@ export class UserServer{
         saveToLocalStorage(updateId(), user)
     }
     put(id, user){//edit user
+        //check that id exists and is user!
+        const item=this.user.getUser(id)
+        if(item==null){
+            return false
+        }
         saveToLocalStorage(id, user)
+        return true
+
     }
     delete_(id){
+        const item=this.user.getUser(id)
+        if(item==null){
+            return false
+        }
         deleteFromLocalStorage(id)
+        return true
     }
 }

@@ -21,10 +21,19 @@ export class TaskServer{
         saveToLocalStorage(updateId(), task)
     }
     put(id, task){//edit task
+        const item=this.task.getTask(id)
+        if(item==null){
+            return false
+        }
         saveToLocalStorage(id, task)
+        return true
     }
     delete_(id){
+        const item=this.task.getTask(id)
+        if(item==null){
+            return false
+        }
         deleteFromLocalStorage(id)
-    }
+        return true    }
 }
 
