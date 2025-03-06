@@ -1,11 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
     checkUserSession();
     loadTasksFromStorage();
-});
-
-
-document.addEventListener("DOMContentLoaded", function () {
-    const username = localStorage.getItem("username") || "Guest";
+    const username = localStorage.getItem("username");
     document.getElementById("profileUsername").textContent = username;
 
     const profilePic = localStorage.getItem("profilePic");
@@ -13,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("profilePic").src = profilePic;
     }
 });
+
 
 document.getElementById("taskTime").addEventListener("keypress", function(event) {
     if (event.key === "Enter") {
