@@ -33,7 +33,7 @@ document.getElementById("taskInput").addEventListener("keypress", function(event
 function checkUserSession() {
     const currentUser = localStorage.getItem("username");
     if (!currentUser) {
-       alert("אין משתמש מחובר!");
+       alert("There is no connected user");
          window.location.href = "login.html"; // הפנייה לדף ההתחברות
     }
 
@@ -45,7 +45,7 @@ function addTask() {
     if (taskText === "") return;
 
     let timeInput = document.getElementById("taskTime").value.trim() || "";
-    if (taskText === "" || timeInput === "") return; // לוודא ששני השדות מלאים
+    //if (taskText === "" || timeInput === "") return; // לוודא ששני השדות מלאים
 
 
     const currentUser = localStorage.getItem("username");
@@ -158,13 +158,8 @@ function toggleTaskStatus(taskId, isCompleted) {
     localStorage.setItem(`tasks_${currentUser}`, JSON.stringify(tasks));
 }
 
-function logout() {
-    localStorage.removeItem("username");
-    window.location.href = "login.html";
-}
 
 function logout() {
     localStorage.removeItem("loggedInUser");
-    alert("Logged out successfully!");
     window.location.href = "login.html";
 }

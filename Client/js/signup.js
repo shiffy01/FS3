@@ -8,6 +8,7 @@ const isUserExists = (username) => !!localStorage.getItem(username);
 // פונקציה לשמירת משתמש חדש
 const saveUser = (user) => {
     localStorage.setItem(user.username, JSON.stringify(user));
+    
 };
 
 const setCookie = (name, value, days) => {
@@ -26,7 +27,7 @@ const printAllUsers = () => {
         try {
             const user = JSON.parse(userString); // נסה לפרסר
             if (user && user.username) {
-                console.log(`Username: ${user.username}, Email: ${user.email}`);
+                console.log(`Username: ${user.username}`);//, Email: ${user.email}
             }
         } catch (error) {
             // אם הערך לא בפורמט JSON, דלג עליו
@@ -36,7 +37,7 @@ const printAllUsers = () => {
 };
 
 // פונקציה לאימות פורמט האימייל
-const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+//const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
 // מאזין לטופס
 form.addEventListener("submit", (event) => {
@@ -44,7 +45,7 @@ form.addEventListener("submit", (event) => {
 
     const username = document.getElementById("username").value.trim();
     const password = document.getElementById("password").value.trim();
-    const email = document.getElementById("email").value.trim();
+   // const email = document.getElementById("email").value.trim();
 
     // בדיקות
     if (isUserExists(username)) {
@@ -58,13 +59,13 @@ form.addEventListener("submit", (event) => {
     }
 
     // בדיקה אם האימייל חוקי
-    if (!validateEmail(email)) {
+   /* if (!validateEmail(email)) {
         showMessage("Invalid email format. Please enter a valid email.", "error");
         return;
-    }
+    }*/
 
     // יצירת משתמש חדש ושמירתו ב-localStorage
-    const newUser = { username, password, email, highScore1:0, highScore2:0 };
+    const newUser = { username, password, /*email*/};
     saveUser(newUser);
     localStorage.setItem("username", JSON.stringify(newUser));
     //console.log(localStorage.getItem("loggedInUser"))
@@ -72,12 +73,12 @@ form.addEventListener("submit", (event) => {
     // הצגת הודעה והרשמה מוצלחת
     showMessage("Registration successful! Redirecting to the website...", "success");
 
-    if (username && password && email) {
+    if (username && password /* &&email*/) {
         // שמירת שם משתמש וסיסמה ב-cookies
         setCookie("username", username, 7); // שמירה לשבעה ימים
         setCookie("password", password, 7);
-        setCookie("email", email, 7);
-        alert("Sign Up successful! Cookies have been set.");
+        /*setCookie("email", email, 7);*/
+        alert("Sign Up successful!");
     } else {
         alert("Please fill in all fields.");
     }
