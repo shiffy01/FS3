@@ -36,7 +36,7 @@ export class User {
     getUser(id) {
         const data = JSON.parse(localStorage.getItem(id));
         if (data) {
-            const user = new User(data.id, data.name, data.password, this.type_=this.type_);
+            const user = new User(data.name, data.password, this.type_=this.type_);
             return user;
         }
         return null;
