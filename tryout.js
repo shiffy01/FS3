@@ -4,7 +4,7 @@ import { FXMLHttpRequest } from './Network/request.js';
 
 export function tryout(){
     const request_ = new FXMLHttpRequest();
-    request_.open("DELETE", "url/user/delete/20");
+    request_.open("GET", "url/user/get/1");
     
     request_.onload = function(data) {
         console.log("Server Response:", this.response);

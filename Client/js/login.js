@@ -1,4 +1,3 @@
-
 // פונקציה לשמירת עוגייה עם זמן תפוגה
 const setCookie = (name, value, seconds) => {
     const date = new Date();
@@ -131,5 +130,3 @@ window.onload = () => {
 //         }
 //     }
 // };
-
-
