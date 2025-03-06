@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="../css/profile.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>User Profile</h1>
+        </header>
+        <main>
+            <section class="profile-info">
+                <h2>Name: <span id="profileUsername">[User]</span>!</h2>
+                <p>Email: <span id="profileEmail">[Email]</span></p>
+            </section>
+            <section class="activities">
+                <h2>Your Activities</h2>
+                <ul id="activityList">
+                    <!-- Items will be dynamically added -->
+                </ul>
+            </section>
+            <section class="tasks">
+                <h2>Your Tasks</h2>
+               <!-- <button onclick="loadTasks()">Refresh Tasks</button>-->
+                <ul id="taskList">
+                    <!-- Tasks will be dynamically added -->
+                </ul>
+                <button class="todo-button" onclick="goToToDoList()">Show To-Do List</button>
+            </section>
+        </main>
+        <footer>
+            <button class="logout-button" onclick="logout()">Logout</button>
+        </footer>
+    </div>
+    
+    <script src="../js/profile.js"></script>
+</body>
+</html>

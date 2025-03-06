@@ -2,7 +2,7 @@
  * Validates and signs up a new user by storing their username and password in localStorage and cookies.
  * Redirects to the homepage upon successful signup.
  */
-function signup() {
+/*function signup() {
     const username = document.getElementById('signup-username').value;
     const password = document.getElementById('signup-password').value;
 
@@ -27,7 +27,7 @@ function signup() {
  * @param {string} username - The username of the player.
  * @param {number} score - The new score to update.
  */
-function updateScore(username, score) {
+/*function updateScore(username, score) {
     let user = JSON.parse(localStorage.getItem(username));
     if (user) {
         user.score = score;
@@ -40,7 +40,7 @@ function updateScore(username, score) {
  * @param {string} username - The username of the player.
  * @returns {number} The score of the user, or 0 if the user does not exist.
  */
-function getScore(username) {
+/*function getScore(username) {
     let user = JSON.parse(localStorage.getItem(username));
     return user ? user.score : 0;
 }
@@ -50,7 +50,7 @@ function getScore(username) {
  * Redirects to the homepage upon successful login.
  * Locks the user after 3 failed attempts for 5 minutes.
  */
-function login() {
+/*function login() {
     const username = document.getElementById('login-username').value;
     const password = document.getElementById('login-password').value;
 
@@ -96,7 +96,7 @@ function login() {
  * @param {string} message - The message to display.
  * @param {string} color - The color of the message text.
  */
-function displayMessage(message, color) {
+/*function displayMessage(message, color) {
     const messageDiv = document.getElementById('message');
     messageDiv.textContent = message;
     messageDiv.style.color = color;
@@ -105,7 +105,7 @@ function displayMessage(message, color) {
 /**
  * Shows the login form and hides the signup form.
  */
-function showLogin() {
+/*function showLogin() {
     document.getElementById('signup-container').style.display = 'none';
     document.getElementById('login-container').style.display = 'block';
 }
@@ -113,7 +113,7 @@ function showLogin() {
 /**
  * Shows the signup form and hides the login form.
  */
-function showSignup() {
+/*function showSignup() {
     document.getElementById('login-container').style.display = 'none';
     document.getElementById('signup-container').style.display = 'block';
 }
@@ -122,7 +122,7 @@ function showSignup() {
  * Retrieves all players stored in localStorage, excluding the current user.
  * @returns {Array} An array of player objects with name and score properties.
  */
-function getAllPlayers() {
+/*function getAllPlayers() {
     let players = [];
     for (let i = 0; i < localStorage.length; i++) {
         let key = localStorage.key(i);
@@ -141,7 +141,7 @@ function getAllPlayers() {
  * @param {string} name - The name of the cookie.
  * @returns {string|null} The value of the cookie, or null if not found.
  */
-function getCookie(name) {
+/*function getCookie(name) {
     const nameEQ = name + "=";
     const cookiesArray = document.cookie.split(';');
     for (let i = 0; i < cookiesArray.length; i++) {
@@ -159,7 +159,7 @@ function getCookie(name) {
  * @param {string} value - The value to store in the cookie.
  * @param {number} days - The number of days until the cookie expires.
  */
-function setCookie(name, value, days) {
+/*function setCookie(name, value, days) {
     const date = new Date();
     date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
     const expires = "expires=" + date.toUTCString();
@@ -170,6 +170,6 @@ function setCookie(name, value, days) {
  * Deletes a cookie by setting its expiration date to a past date.
  * @param {string} name - The name of the cookie to delete.
  */
-function deleteCookie(name) {
+/*function deleteCookie(name) {
     document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/";
-}
+}*/

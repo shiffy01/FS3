@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-Do List</title>
     <link rel="stylesheet" href="../css/homepage.css">
+    <script src="..\js\main.js" defer></script>
+
 </head>
+
 <body>
     <div class="todo-container">
         <h1>To-Do List</h1>
@@ -17,7 +21,9 @@
     </div>
 
     <script>
-        function addTask() {
+      
+
+        /*function finishedTask() {
             let input = document.getElementById("taskInput");
             let taskText = input.value.trim();
             if (taskText === "") return;
@@ -28,30 +34,10 @@
             document.getElementById("taskList").appendChild(li);
             input.value = "";
         }
-
-        function removeTask(button) {
-            button.parentElement.remove();
-        }
-        function addTask() {
-    let input = document.getElementById("taskInput");
-    let taskText = input.value.trim();
-    if (taskText === "") return;
-
-    let li = document.createElement("li");
-    li.innerHTML = `${taskText} <button onclick="removeTask(this)">X</button>`;
-    
-    document.getElementById("taskList").appendChild(li);
-    
-    saveTaskToStorage(taskText); // שמירת המשימה ב-LocalStorage
-    input.value = "";
-}
-
-function saveTaskToStorage(taskText) {
-    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    tasks.push(taskText);
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-}
+*/
+       
 
     </script>
 </body>
+
 </html>
