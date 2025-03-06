@@ -25,17 +25,25 @@ export class FXMLHttpRequest {
     
     open(method, url) {
         if(method!="GET" && method!="PUT" && method!="POST" && method!="DELETE"){
-            prompt("error in method")
+            this.response=JSON.stringify({ success: false, message: "unidentified method"})
+            this.status=400
+            if (this.onerror) this.onerror();
         }
         const urlPieces = url.split("/"); 
         if(urlPieces.length<3){
-            prompt("bad url")
+            this.response=JSON.stringify({ success: false, message: "error in url syntax"})
+            this.status=400
+            if (this.onerror) this.onerror();
         }
         if(urlPieces[0]!="url" && (urlPieces[1]!="task"|| urlPieces[1]!="user")){
-            prompt("error in url syntax")
+            this.response=JSON.stringify({ success: false, message: "wrong data type"})
+            this.status=400
+            if (this.onerror) this.onerror();
         }
         if(urlPieces[2]!=method.toLowerCase()){
-            prompt("mismatch between url and method")
+            this.response=JSON.stringify({ success: false, message: "mismatch between url and method"})
+            this.status=400
+            if (this.onerror) this.onerror();
         }
         this.method = method;
         this.url = url;
@@ -45,7 +53,9 @@ export class FXMLHttpRequest {
     send(data = null) {
         const urlPieces = this.url.split("/"); 
         if(data==null&& urlPieces[3]?.length==undefined){
-            prompt("no data sent!")
+            this.response=JSON.stringify({ success: false, message: "expected data"})
+            this.status=400
+            if (this.onerror) this.onerror();
         }
         this.data = data;
         this.readyState = 2; //sent
