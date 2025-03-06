@@ -4,7 +4,7 @@ import { FXMLHttpRequest } from './Network/request.js';
 
 export function tryout(){
     const request_ = new FXMLHttpRequest();
-    request_.open("GET", "url/user/get/10");
+    request_.open("DELETE", "url/user/delete/20");
     
     request_.onload = function(data) {
         console.log("Server Response:", this.response);
@@ -15,7 +15,7 @@ export function tryout(){
         console.log("Error: Request failed", this.response);
     };
     const task=new Task("shiffy", "hw", "qs 1 and 2", false, 3, "task")
-    const user=new User("naftali", "pass7", "user")
+    const user=new User("shiffy", "pass100", "user")
     request_.send();
     
 }
@@ -38,9 +38,9 @@ window.tryout = tryout;
  */
 //ERRORS to consider
 /**
- * 1. when we are getting a task but give it an id of user
- * 2. when id for get doesnt exist
- * 3. when id for put doesnt exist
- * 4. when id for delete doesnt exist
+ * V when we are getting a task but give it an id of user
+ * V when id for get doesnt exist
+ * V when id for put doesnt exist
+ * V when id for delete doesnt exist
  * 5. fix all the prompts
  */

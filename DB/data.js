@@ -10,7 +10,7 @@ export class Task {
 
     getTask(id) {
         const data = JSON.parse(localStorage.getItem(id));
-        if (data) {
+        if (data && data?.type_=="task") {
             const task = new Task(data.userName, data.title, data.description, data.completed,
                 data.time, data.type_
             );
@@ -35,7 +35,7 @@ export class User {
     }
     getUser(id) {
         const data = JSON.parse(localStorage.getItem(id));
-        if (data) {
+        if (data && data?.type_=="user") {
             const user = new User(data.name, data.password, this.type_=this.type_);
             return user;
         }
