@@ -87,7 +87,7 @@ loginForm.addEventListener("submit", function (event) {
         showMessage("Login successful! Redirecting to home page...", "success");
 
         setTimeout(() => {
-            window.location.href = "profile.html"; // הפניה לדף הבית
+            window.location.href = "homepage.html"; // הפניה לדף הבית
         }, 2000);
     } else {
         showMessage("Please fill in all fields.", "error");

@@ -86,7 +86,7 @@ form.addEventListener("submit", (event) => {
     printAllUsers();
     // הפניה ל-profile.html לאחר הרשמה
     setTimeout(() => {
-        window.location.href = "profile.html"; // הפניה לדף הבית
+        window.location.href = "homepage.html"; // הפניה לדף הבית
     }, 2000);
     // איפוס הטופס
     form.reset();
