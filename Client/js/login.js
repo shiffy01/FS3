@@ -16,7 +16,7 @@ const getCookie = (name) => {
     }
     return null;
 };
-
+ 
 // פונקציה למחיקת עוגייה
 const deleteCookie = (name) => {
     setCookie(name, "", -1); // הגדרת זמן תפוגה שלילי למחיקה מיידית
