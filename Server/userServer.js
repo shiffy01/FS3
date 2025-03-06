@@ -1,22 +1,28 @@
-//get, post, put, delete
-function get(){
-    users=[]
-    //not finished
+import { deleteFromLocalStorage, saveToLocalStorage, getAllFromLocalStorage, User, updateId } from "../DB/data.js"
+
+export class UserServer{
+    constructor(){
+        this.user= new User()
+    }
+    getAll(){
+        let users=[]
+        let items=getAllFromLocalStorage()
+        for (let i = 0; i < items.length; i++) {
+            if(items[i]?.type_=="user")
+                users.push(items[i])
+        }
+        return users
+    }
+    get(id){
+         return this.user.getUser(id)
+    }
+    post(user){//add new user
+        saveToLocalStorage(updateId(), user)
+    }
+    put(id, user){//edit user
+        saveToLocalStorage(id, user)
+    }
+    delete_(id){
+        deleteFromLocalStorage(id)
+    }
 }
-function get(id){
-     return User.getUser(id)
-}
-function post(user){//add new user
-    saveToLocalStorage(user.id, user)
-}
-function put(user){//edit user
-    deleteFromLocalStorage(user.id)
-    saveToLocalStorage(user.id, user)
-}
-function delete_(id){
-    deleteFromLocalStorage(id)
-}
-//TO DO
-// check its all in the right format before sending
-// send request status?? what does that mean?
-//  
