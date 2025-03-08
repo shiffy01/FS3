@@ -4,7 +4,7 @@ import { FXMLHttpRequest } from './Network/request.js';
 
 export function tryout(){
     const request_ = new FXMLHttpRequest();
-    request_.open("GET", "url/user/get/1");
+    request_.open("GET", "url/task/get/binyamin");
     
     request_.onload = function(data) {
         console.log("Server Response:", this.response);
@@ -17,7 +17,6 @@ export function tryout(){
     const task=new Task("shiffy", "hw", "qs 1 and 2", false, 3, "task")
     const user=new User("shiffy", "pass100", "user")
     request_.send();
-    
 }
 window.tryout = tryout;
 

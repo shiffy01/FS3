@@ -37,4 +37,12 @@ export class UserServer{
         deleteFromLocalStorage(id)
         return true
     }
+    getByUserName(name){
+        let items=this.getAll()
+        for (let i = 0; i < items.length; i++) {
+            if(items[i]?.name==name)
+                return items[i]
+        }
+        return null
+    }
 }

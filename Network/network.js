@@ -24,7 +24,7 @@ export class Network {
 
         setTimeout(() => {
             if (dropChance < 0.3) { // לדוגמה, השמטה בהסתברות של 30%
-                callback(JSON.stringify({ success: false, message: "error has occured"}), 500);
+                callback(JSON.stringify({ success: false, message: "timeout error"}), 500);
                 return;
             }
             const type_=request.url.split("/")[1]
@@ -32,15 +32,23 @@ export class Network {
             if(request.method=="GET"){
                 if(request.url.split("/").length <4){//get all                  
                     data=data=servers[type_].getAll()                  
-                }
-                else{                   
-                    data=data=servers[type_].get(request.url.split("/")[3])
+                }     
+                else if(!isNaN(request.url.split("/")[3])){//get by id                   
+                    data=servers[type_].get(request.url.split("/")[3])
                     if(data==null)
                     {
                         callback(JSON.stringify({ success: false, message: type_+" of this id not found"}), 404);
                         return
                     }                   
-                }          
+                }  
+                else{//get by property
+                    data=servers[type_].getByUserName(request.url.split("/")[3])
+                    if(data==null)
+                        {
+                            callback(JSON.stringify({ success: false, message: type_+" of this name not found"}), 404);
+                            return
+                        }   
+                }        
             }
             else if(request.method=="POST"){
                 data=data=servers[type_].post(request.data)

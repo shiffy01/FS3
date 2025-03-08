@@ -104,8 +104,20 @@ function showMessage(msg, type) {
 
 // פונקציה לקבלת נתוני משתמש מ-localStorage
 const getUser = (username) => {
-    const userString = localStorage.getItem(username);
-    return userString ? JSON.parse(userString) : null;
+    const request_ = new FXMLHttpRequest();
+    request_.open("GET", "url/user/get/"+username);
+    
+    request_.onload = function(data) {
+        return data
+    };
+    
+    request_.onerror = function() {
+        if(this.response=="timeout error"){
+            request_.send()
+        }
+        else(prompt(this.response))
+    };
+    request_.send();
 };
 
 

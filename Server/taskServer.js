@@ -34,6 +34,17 @@ export class TaskServer{
             return false
         }
         deleteFromLocalStorage(id)
-        return true    }
+        return true    
+    }
+    getByUserName(name){
+        let items=this.getAll()
+        let tasks=[]
+        for (let i = 0; i < items.length; i++) {
+            if(items[i]?.userName==name)
+                tasks.push(items[i])
+        }
+        return tasks
+
+    }
 }
 
