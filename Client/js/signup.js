@@ -3,11 +3,37 @@ const form = document.getElementById("registrationForm");
 const messageDiv = document.getElementById("message");
 
 // פונקציה לבדיקת משתמשים קיימים
-const isUserExists = (username) => !!localStorage.getItem(username);
+const isUserExists = (username) => {
+    const request_ = new FXMLHttpRequest();
+    request_.open("GET", "url/user/get/"+username);
+    
+    request_.onload = function(data) {
+        return true
+    };
+    
+    request_.onerror = function() {
+        if(this.response=="timeout error"){
+            request_.send()
+        }
+        else if(this.response=="user of this name not found"){
+            return false
+        }
+        else(prompt(this.response))
+    };
+    request_.send();
+}
 
 // פונקציה לשמירת משתמש חדש
 const saveUser = (user) => {
-    localStorage.setItem(user.username, JSON.stringify(user));
+    const request_ = new FXMLHttpRequest();
+    request_.open("POST", "url/user/post");    
+    request_.onerror = function() {
+        if(this.response=="timeout error"){
+            request_.send()
+        }
+        else(prompt(this.response))
+    };
+    request_.send(user);
     
 };
 
@@ -19,21 +45,20 @@ const setCookie = (name, value, days) => {
 }
 // פונקציה להדפסת כל המשתמשים ב-localStorage
 const printAllUsers = () => {
-    console.log("All Users in localStorage:");
-    for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        const userString = localStorage.getItem(key);
-
-        try {
-            const user = JSON.parse(userString); // נסה לפרסר
-            if (user && user.username) {
-                console.log(`Username: ${user.username}`);//, Email: ${user.email}
-            }
-        } catch (error) {
-            // אם הערך לא בפורמט JSON, דלג עליו
-            console.warn(`Skipped non-JSON value for key: ${key}`);
+    const request_ = new FXMLHttpRequest();
+    request_.open("GET", "url/user/get");
+    request_.onload=function(data){
+        for(let i=0; i<data.length; i++){
+            print(data[i])
         }
-    }
+    }    
+    request_.onerror = function() {
+        if(this.response=="timeout error"){
+            request_.send()
+        }
+        else(prompt(this.response))
+    };
+    request_.send(user);
 };
 
 // פונקציה לאימות פורמט האימייל
