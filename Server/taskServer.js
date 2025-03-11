@@ -18,7 +18,7 @@ export class TaskServer{
          return this.task.getTask(id)
     }
     post(task){//add new task
-        id=updateId()
+        let id=updateId()
         task.id=id;
         saveToLocalStorage(id, task)
         return id

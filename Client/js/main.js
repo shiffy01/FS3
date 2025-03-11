@@ -1,4 +1,4 @@
-import { FXMLHttpRequest } from "../../Network/request";
+import { FXMLHttpRequest } from "../../Network/request.js";
 
 document.addEventListener("DOMContentLoaded", function() {
     checkUserSession();
@@ -63,7 +63,7 @@ function addTask() {
         task.id=data
     };
     request_.onerror = function() {
-        if(this.response=="timeout error"){
+        if(JSON.parse(this.response).message=="timeout error"){
             request_.send()
         }
         else(prompt(this.response))
@@ -84,7 +84,7 @@ function removeTask(button, taskId) {
         console.log("Server Response:", this.response);
     };
     request_.onerror = function() {
-        if(this.response=="timeout error"){
+        if(JSON.parse(this.response).message=="timeout error"){
             request_.send()
         }
         else(prompt(this.response))
@@ -106,7 +106,7 @@ function loadTasksFromStorage() {
         tasks=data
     };
     request_.onerror = function() {
-        if(this.response=="timeout error"){
+        if(JSON.parse(this.response).message=="timeout error"){
             request_.send()
         }
         else(prompt(this.response))
@@ -188,8 +188,8 @@ function toggleTaskStatus(taskId, isCompleted) {
         task=data
     };
     request_1.onerror = function() {
-        if(this.response=="timeout error"){
-            request_.send()
+        if(JSON.parse(this.response).message=="timeout error"){
+            request_1.send()
         }
         else(prompt(this.response))
     };
@@ -203,8 +203,8 @@ function toggleTaskStatus(taskId, isCompleted) {
         console.log(data)
     };
     request_2.onerror = function() {
-        if(this.response=="timeout error"){
-            request_.send()
+        if(JSON.parse(this.response).message=="timeout error"){
+            request_2.send()
         }
         else(prompt(this.response))
     };

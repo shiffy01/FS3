@@ -1,3 +1,5 @@
+import { FXMLHttpRequest } from "../../Network/request.js";
+
 // מציאת האלמנטים מה-DOM
 const form = document.getElementById("registrationForm");
 const messageDiv = document.getElementById("message");
@@ -12,7 +14,7 @@ const isUserExists = (username) => {
     };
     
     request_.onerror = function() {
-        if(this.response=="timeout error"){
+        if(JSON.parse(this.response).message=="timeout error"){
             request_.send()
         }
         else if(this.response=="user of this name not found"){
@@ -28,7 +30,7 @@ const saveUser = (user) => {
     const request_ = new FXMLHttpRequest();
     request_.open("POST", "url/user/post");    
     request_.onerror = function() {
-        if(this.response=="timeout error"){
+        if(JSON.parse(this.response).message=="timeout error"){
             request_.send()
         }
         else(prompt(this.response))
@@ -48,7 +50,7 @@ const printAllUsers = () => {
         }
     }    
     request_.onerror = function() {
-        if(this.response=="timeout error"){
+        if(JSON.parse(this.response).message=="timeout error"){
             request_.send()
         }
         else(prompt(this.response))

@@ -1,3 +1,4 @@
+import { FXMLHttpRequest } from "../../Network/request.js";
 
 const loginForm = document.getElementById("loginForm");
 const messageDiv = document.getElementById("message");
@@ -8,12 +9,6 @@ loginForm.addEventListener("submit", function (event) {
 
     const username = usernameInput.value.trim();
     const password = document.getElementById("password").value.trim();
-
-    // בדיקת אם המשתמש חסום
-    if (checkIfBlocked(username)) {
-        showMessage("User is blocked for 1 minute due to multiple failed attempts.", "error");
-        return;
-    }
 
     // בדיקת פרטי המשתמש
     const user = getUser(username);
@@ -52,16 +47,19 @@ function showMessage(msg, type) {
 const getUser = (username) => {
     const request_ = new FXMLHttpRequest();
     request_.open("GET", "url/user/get/"+username);
-    
+    let to_return;
     request_.onload = function(data) {
-        return data
+        console.log(this.response, data)
+        to_return= data
     };
     
     request_.onerror = function() {
-        if(this.response=="timeout error"){
+        if(JSON.parse(this.response).message=="timeout error"){
+            console.log(this.response)
             request_.send()
         }
         else(prompt(this.response))
     };
     request_.send();
+    return to_return
 };
