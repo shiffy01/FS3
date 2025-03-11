@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (profilePic) {
         document.getElementById("profilePic").src = profilePic;
     }
+    //FIX/?///////////////////////// add pic to files and get from there
 });
 
 
@@ -78,7 +79,7 @@ function removeTask(button, taskId) {
 function loadTasksFromStorage() {
     const currentUser = localStorage.getItem("username");
     let tasks = JSON.parse(localStorage.getItem(`tasks_${currentUser}`)) || [];
-
+    //switch with request
     document.getElementById("taskList").innerHTML = ""; // ניקוי הרשימה
     tasks.forEach(task => renderTask(task));
 }
@@ -108,26 +109,26 @@ function renderTask(task) {
 
     li.appendChild(checkbox);
 
-// הוספת הטקסט של המשימה
-let taskText = document.createTextNode(` ${task.text}`);
-li.appendChild(taskText);
- 
+    // הוספת הטקסט של המשימה
+    let taskText = document.createTextNode(` ${task.text}`);
+    li.appendChild(taskText);
+    
 
-let timeElement = document.createElement("span");
-timeElement.textContent = ` (${task.time})`;
-timeElement.style.fontSize = "12px";
-timeElement.style.color = "gray";
+    let timeElement = document.createElement("span");
+    timeElement.textContent = ` (${task.time})`;
+    timeElement.style.fontSize = "12px";
+    timeElement.style.color = "gray";
 
-li.appendChild(timeElement);
+    li.appendChild(timeElement);
 
 
 
-// יצירת כפתור ה-X
-let removeButton = document.createElement("button");
-removeButton.textContent = "🗑️ X";
-removeButton.classList.add("x");
-removeButton.onclick = function() {
-    removeTask(removeButton, task.id);
+    // יצירת כפתור ה-X
+    let removeButton = document.createElement("button");
+    removeButton.textContent = "🗑️ X";
+    removeButton.classList.add("x");
+    removeButton.onclick = function() {
+        removeTask(removeButton, task.id);
 };
 //הוספת X
 li.appendChild(removeButton);
@@ -146,13 +147,15 @@ li.appendChild(removeButton);
 function toggleTaskStatus(taskId, isCompleted) {
     const currentUser = localStorage.getItem("username");
     let tasks = JSON.parse(localStorage.getItem(`tasks_${currentUser}`)) || [];
-
+    //switch with request//////////////////////
     tasks.forEach(task => {
         if (task.id === taskId) {
             task.completed = isCompleted; 
         }
     });
     localStorage.setItem(`tasks_${currentUser}`, JSON.stringify(tasks));
+        //switch with request//////////////////////
+
 }
 
 
