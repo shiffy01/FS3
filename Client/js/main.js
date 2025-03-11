@@ -55,7 +55,31 @@ function addRequest(task) {
     request_.send(task);
     });
 };
-async function addTask() {
+// async function addTask() {
+//     let input = document.getElementById("taskInput");
+//     let taskText = input.value.trim();
+//     if (taskText === "") return;
+
+//     let timeInput = document.getElementById("taskTime").value.trim() || "";
+//     //if (taskText === "" || timeInput === "") return; // לוודא ששני השדות מלאים
+
+//     const currentUser = localStorage.getItem("username");
+//     let task = { 
+//         id: 0, 
+//         userName: currentUser,
+//         title: taskText, 
+//         description: "",
+//         completed: false, // משימה חדשה = לא בוצעה עדיין
+//         time: timeInput, // הוספת משך הזמן למשימה
+//         type_: "task"
+//     };
+//     const id=await addRequest(task)
+//     document.getElementById("taskTime").value = "";
+//     renderTask(task);
+//     input.value = "";
+// }
+
+window.addTask = async function() {
     let input = document.getElementById("taskInput");
     let taskText = input.value.trim();
     if (taskText === "") return;
@@ -77,7 +101,7 @@ async function addTask() {
     document.getElementById("taskTime").value = "";
     renderTask(task);
     input.value = "";
-}
+};
 
 function removeTask(taskId) {
     return new Promise((resolve, reject) => {
