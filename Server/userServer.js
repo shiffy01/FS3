@@ -17,7 +17,9 @@ export class UserServer{
          return this.user.getUser(id)
     }
     post(user){//add new user
-        saveToLocalStorage(updateId(), user)
+        id=updateId()
+        saveToLocalStorage(id, user)
+        return id
     }
     put(id, user){//edit user
         //check that id exists and is user!

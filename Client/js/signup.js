@@ -77,7 +77,7 @@ form.addEventListener("submit", (event) => {
   
 
     // יצירת משתמש חדש ושמירתו ב-localStorage
-    const newUser = { username, password, /*email*/};
+    const newUser = { username, password, type_: "user"};
     saveUser(newUser);
     localStorage.setItem("username", JSON.stringify(newUser));
 

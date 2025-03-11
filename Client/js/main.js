@@ -1,14 +1,14 @@
+import { FXMLHttpRequest } from "../../Network/request";
+
 document.addEventListener("DOMContentLoaded", function() {
     checkUserSession();
     loadTasksFromStorage();
     const username = localStorage.getItem("username");
     document.getElementById("profileUsername").textContent = username;
 
-    const profilePic = localStorage.getItem("profilePic");
-    if (profilePic) {
-        document.getElementById("profilePic").src = profilePic;
-    }
-    //FIX/?///////////////////////// add pic to files and get from there
+   
+    document.getElementById("profilePic").src = "../Pics/Avatar.jpeg";
+
 });
 
 
@@ -45,41 +45,74 @@ function addTask() {
     let timeInput = document.getElementById("taskTime").value.trim() || "";
     //if (taskText === "" || timeInput === "") return; // לוודא ששני השדות מלאים
 
-
     const currentUser = localStorage.getItem("username");
-
-    let tasks = JSON.parse(localStorage.getItem(`tasks_${currentUser}`)) || [];
-    const taskId = Date.now();
-    
     let task = { 
-        id: taskId, 
-        text: taskText, 
+        id: 0, 
+        userName: currentUser,
+        title: taskText, 
+        description: "",
         completed: false, // משימה חדשה = לא בוצעה עדיין
-        time: timeInput // הוספת משך הזמן למשימה
-
+        time: timeInput, // הוספת משך הזמן למשימה
+        type_: "task"
+    };
+    const request_ = new FXMLHttpRequest();
+    request_.open("POST", "url/task/post");
+    
+    request_.onload = function(data) {
+        console.log("Server Response:", this.response);
+        task.id=data
+    };
+    request_.onerror = function() {
+        if(this.response=="timeout error"){
+            request_.send()
+        }
+        else(prompt(this.response))
     };
     
-    tasks.push(task);
-    localStorage.setItem(`tasks_${currentUser}`, JSON.stringify(tasks));
+    request_.send(task);
+    
     document.getElementById("taskTime").value = "";
     renderTask(task);
     input.value = "";
 }
 
 function removeTask(button, taskId) {
-    const currentUser = localStorage.getItem("username");
-    let tasks = JSON.parse(localStorage.getItem(`tasks_${currentUser}`)) || [];
-
-    tasks = tasks.filter(task => task.id !== taskId);
-    localStorage.setItem(`tasks_${currentUser}`, JSON.stringify(tasks));
+    const request_ = new FXMLHttpRequest();
+    request_.open("DELETE", "url/task/delete/"+taskId);
+    
+    request_.onload = function(data) {
+        console.log("Server Response:", this.response);
+    };
+    request_.onerror = function() {
+        if(this.response=="timeout error"){
+            request_.send()
+        }
+        else(prompt(this.response))
+    };
+    
+    request_.send();
 
     button.parentElement.remove();
 }
 
 function loadTasksFromStorage() {
     const currentUser = localStorage.getItem("username");
-    let tasks = JSON.parse(localStorage.getItem(`tasks_${currentUser}`)) || [];
-    //switch with request
+    const request_ = new FXMLHttpRequest();
+    request_.open("GET", "url/task/get/"+currentUser);
+    let tasks=[]
+    request_.onload = function(data) {
+        console.log("Server Response:", this.response);
+        console.log(data)
+        tasks=data
+    };
+    request_.onerror = function() {
+        if(this.response=="timeout error"){
+            request_.send()
+        }
+        else(prompt(this.response))
+    };
+    
+    request_.send();
     document.getElementById("taskList").innerHTML = ""; // ניקוי הרשימה
     tasks.forEach(task => renderTask(task));
 }
@@ -146,20 +179,50 @@ li.appendChild(removeButton);
 
 function toggleTaskStatus(taskId, isCompleted) {
     const currentUser = localStorage.getItem("username");
-    let tasks = JSON.parse(localStorage.getItem(`tasks_${currentUser}`)) || [];
-    //switch with request//////////////////////
-    tasks.forEach(task => {
-        if (task.id === taskId) {
-            task.completed = isCompleted; 
+    const request_1 = new FXMLHttpRequest();
+    request_1.open("GET", "url/task/get/"+taskId);
+    let task;
+    request_1.onload = function(data) {
+        console.log("Server Response:", this.response);
+        console.log(data)
+        task=data
+    };
+    request_1.onerror = function() {
+        if(this.response=="timeout error"){
+            request_.send()
         }
-    });
-    localStorage.setItem(`tasks_${currentUser}`, JSON.stringify(tasks));
-        //switch with request//////////////////////
+        else(prompt(this.response))
+    };
+    task.completed=isCompleted;
+    request_1.send();
+    //find task and switch it
+    const request_2 = new FXMLHttpRequest();
+    request_2.open("PUT", "url/task/put/"+taskId);
+    request_2.onload = function(data) {
+        console.log("Server Response:", this.response);
+        console.log(data)
+    };
+    request_2.onerror = function() {
+        if(this.response=="timeout error"){
+            request_.send()
+        }
+        else(prompt(this.response))
+    };
+    
+    request_2.send(task);
 
 }
 
 
 function logout() {
-    localStorage.removeItem("loggedInUser");
+    localStorage.removeItem("username");
     window.location.href = "login.html";
 }
+
+//TODO
+/**
+ * add pic
+ * switch requests
+ * run
+ * continue
+ */

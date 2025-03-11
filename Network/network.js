@@ -51,7 +51,7 @@ export class Network {
                 }        
             }
             else if(request.method=="POST"){
-                data=data=servers[type_].post(request.data)
+                data=servers[type_].post(request.data)
                 message="data sent successfully"
             }    
             else if(request.method=="PUT"){                

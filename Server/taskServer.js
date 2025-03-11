@@ -18,7 +18,10 @@ export class TaskServer{
          return this.task.getTask(id)
     }
     post(task){//add new task
-        saveToLocalStorage(updateId(), task)
+        id=updateId()
+        task.id=id;
+        saveToLocalStorage(id, task)
+        return id
     }
     put(id, task){//edit task
         const item=this.task.getTask(id)
@@ -44,7 +47,6 @@ export class TaskServer{
                 tasks.push(items[i])
         }
         return tasks
-
     }
 }
 
