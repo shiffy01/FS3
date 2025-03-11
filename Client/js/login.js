@@ -14,15 +14,20 @@ loginForm.addEventListener("submit", async function (event) {
     const password = document.getElementById("password").value.trim();
       
     // בדיקת פרטי המשתמש  
-    const user =  await getUser(username);
-    console.log("uuuuuuuuuuuuuuser")
-    
+    try{
+        const user =  await getUser(username);
 
-    
-    if (!user) {
+    }
+    catch{
         showMessage("User does not exist. Please sign up.", "error");
         return;
-    }
+    }    
+
+    
+    // if (!user) {
+    //     showMessage("User does not exist. Please sign up.", "error");
+    //     return;
+    // }
 
     if (user.password !== password) {      
         showMessage(`Incorrect password.`, "error");       
@@ -50,28 +55,7 @@ function showMessage(msg, type) {
     messageDiv.className = `message ${type}`;
 }
 
-// פונקציה לקבלת נתוני משתמש מ-localStorage
-//  function getUser(username){
-   
-//         const request_ = new FXMLHttpRequest();
-//         request_.open("GET", "url/user/get/"+username);
-//         let to_return;
-//         request_.onload = function(data) {
-//             console.log(this.response, data)
-//             myuser= data
-//         };
-        
-//         request_.onerror = function() {
-//             if(JSON.parse(this.response).message=="timeout error"){
-//                 console.log(this.response)
-//                 request_.send()
-//             }
-//             else(prompt(this.response))
-//         };
-//         request_.send();
-//         return to_return
-    
-// };
+
 
 function getUser(username) {
     return new Promise((resolve, reject) => {

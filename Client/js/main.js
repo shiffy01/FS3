@@ -47,7 +47,7 @@ function addRequest(task) {
     };
     request_.onerror = function() {
         if(JSON.parse(this.response).message=="timeout error"){
-            request_.send()
+            request_.send(task)
         }
         else(prompt(this.response))
     };
@@ -55,29 +55,6 @@ function addRequest(task) {
     request_.send(task);
     });
 };
-// async function addTask() {
-//     let input = document.getElementById("taskInput");
-//     let taskText = input.value.trim();
-//     if (taskText === "") return;
-
-//     let timeInput = document.getElementById("taskTime").value.trim() || "";
-//     //if (taskText === "" || timeInput === "") return; // לוודא ששני השדות מלאים
-
-//     const currentUser = localStorage.getItem("username");
-//     let task = { 
-//         id: 0, 
-//         userName: currentUser,
-//         title: taskText, 
-//         description: "",
-//         completed: false, // משימה חדשה = לא בוצעה עדיין
-//         time: timeInput, // הוספת משך הזמן למשימה
-//         type_: "task"
-//     };
-//     const id=await addRequest(task)
-//     document.getElementById("taskTime").value = "";
-//     renderTask(task);
-//     input.value = "";
-// }
 
 window.addTask = async function() {
     let input = document.getElementById("taskInput");
@@ -193,7 +170,7 @@ function renderTask(task) {
     removeButton.textContent = "🗑️ X";
     removeButton.classList.add("x");
     removeButton.onclick = async function() {
-        await removeTask(removeButton, task.id);
+        await removeTask(task.id);
         removeButton.parentElement.remove();
 
 };
@@ -242,7 +219,7 @@ async function toggleTaskStatus(taskId, isCompleted) {
     };
     request_2.onerror = function() {
         if(JSON.parse(this.response).message=="timeout error"){
-            request_2.send()
+            request_2.send(task)
         }
         else(prompt(this.response))
     };
@@ -250,12 +227,13 @@ async function toggleTaskStatus(taskId, isCompleted) {
     request_2.send(task);
     //loadTasksFromStorage()
 }
-
-
-function logout() {
+window.logout =  function() {
     localStorage.removeItem("username");
     window.location.href = "login.html";
 }
+
+
+
 
 //TODO
 /**
