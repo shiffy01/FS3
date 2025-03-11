@@ -73,29 +73,31 @@ async function addTask() {
         time: timeInput, // הוספת משך הזמן למשימה
         type_: "task"
     };
-   const id=await addRequest(task)
+    const id=await addRequest(task)
     document.getElementById("taskTime").value = "";
     renderTask(task);
     input.value = "";
 }
 
-function removeTask(button, taskId) {
-    const request_ = new FXMLHttpRequest();
-    request_.open("DELETE", "url/task/delete/"+taskId);
-    
-    request_.onload = function(data) {
-        console.log("Server Response:", this.response);
-    };
-    request_.onerror = function() {
-        if(JSON.parse(this.response).message=="timeout error"){
-            request_.send()
-        }
-        else(prompt(this.response))
-    };
-    
-    request_.send();
+function removeTask(taskId) {
+    return new Promise((resolve, reject) => {
+        const request_ = new FXMLHttpRequest();
+        request_.open("DELETE", "url/task/delete/"+taskId);
+        
+        request_.onload = function(data) {
+            console.log("Server Response:", this.response);
+            resolve(data)
+        };
+        request_.onerror = function() {
+            if(JSON.parse(this.response).message=="timeout error"){
+                request_.send()
+            }
+            else(prompt(this.response))
+        };
+        
+        request_.send();
+    })
 
-    button.parentElement.remove();
 }
 function loadTasksRequest(currentUser){
     return new Promise((resolve, reject) => {
@@ -149,7 +151,7 @@ function renderTask(task) {
     li.appendChild(checkbox);
 
     // הוספת הטקסט של המשימה
-    let taskText = document.createTextNode(` ${task.text}`);
+    let taskText = document.createTextNode(` ${task.title}`);
     li.appendChild(taskText);
     
 
@@ -166,8 +168,10 @@ function renderTask(task) {
     let removeButton = document.createElement("button");
     removeButton.textContent = "🗑️ X";
     removeButton.classList.add("x");
-    removeButton.onclick = function() {
-        removeTask(removeButton, task.id);
+    removeButton.onclick = async function() {
+        await removeTask(removeButton, task.id);
+        removeButton.parentElement.remove();
+
 };
 //הוספת X
 li.appendChild(removeButton);
@@ -182,28 +186,32 @@ li.appendChild(removeButton);
     document.getElementById("taskList").appendChild(li);
 }
 
+function getTask(taskId){
+    return new Promise((resolve, reject) => {
+        const request = new FXMLHttpRequest();
+        request.open("GET", "url/task/get/"+taskId);
+        request.onload = function(data) {
+            console.log("Server Response:", this.response);
+            console.log(data)
+            resolve(data)
+        };
+        request.onerror = function() {
+            if(JSON.parse(this.response).message=="timeout error"){
+                request.send()
+            }
+            else(prompt(this.response))
+        };
+        
+        request.send();
+    })
+    
+}
 
-function toggleTaskStatus(taskId, isCompleted) {
-    const currentUser = localStorage.getItem("username");
-    const request_1 = new FXMLHttpRequest();
-    request_1.open("GET", "url/task/get/"+taskId);
-    let task;
-    request_1.onload = function(data) {
-        console.log("Server Response:", this.response);
-        console.log(data)
-        task=data
-    };
-    request_1.onerror = function() {
-        if(JSON.parse(this.response).message=="timeout error"){
-            request_1.send()
-        }
-        else(prompt(this.response))
-    };
-    task.completed=isCompleted;
-    request_1.send();
-    //find task and switch it
+async function toggleTaskStatus(taskId, isCompleted) {
+    let task= await getTask(taskId)
+    task.completed=isCompleted
     const request_2 = new FXMLHttpRequest();
-    request_2.open("PUT", "url/task/put/"+taskId);
+    request_2.open("PUT", "url/task/put/"+task.id);
     request_2.onload = function(data) {
         console.log("Server Response:", this.response);
         console.log(data)
@@ -216,7 +224,7 @@ function toggleTaskStatus(taskId, isCompleted) {
     };
     
     request_2.send(task);
-
+    //loadTasksFromStorage()
 }
 
 

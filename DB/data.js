@@ -12,7 +12,7 @@ export class Task {
     getTask(id) {
         const data = JSON.parse(localStorage.getItem(id));
         if (data && data?.type_=="task") {
-            const task = new Task(data.userName, data.title, data.description, data.completed,
+            const task = new Task(data.id, data.userName, data.title, data.description, data.completed,
                 data.time, data.type_
             );
             return task;
