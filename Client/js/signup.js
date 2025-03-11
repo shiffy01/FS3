@@ -79,9 +79,9 @@ form.addEventListener("submit", (event) => {
   
 
     // יצירת משתמש חדש ושמירתו ב-localStorage
-    const newUser = { username, password, type_: "user"};
+    const newUser = { name: username, password: password, type_: "user"};
     saveUser(newUser);
-    localStorage.setItem("username", JSON.stringify(newUser));
+    localStorage.setItem("username", newUser.name);
 
     // הצגת הודעה והרשמה מוצלחת
     showMessage("Registration successful! Redirecting to the website...", "success");

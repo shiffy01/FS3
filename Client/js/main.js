@@ -36,8 +36,26 @@ function checkUserSession() {
     }
 
 }
-
-function addTask() {
+function addRequest(task) {
+    return new Promise((resolve, reject) => {
+        const request_ = new FXMLHttpRequest();
+    request_.open("POST", "url/task/post");
+    
+    request_.onload = function(data) {
+        console.log("Server Response:", this.response);
+        resolve(data)
+    };
+    request_.onerror = function() {
+        if(JSON.parse(this.response).message=="timeout error"){
+            request_.send()
+        }
+        else(prompt(this.response))
+    };
+    
+    request_.send(task);
+    });
+};
+async function addTask() {
     let input = document.getElementById("taskInput");
     let taskText = input.value.trim();
     if (taskText === "") return;
@@ -55,22 +73,7 @@ function addTask() {
         time: timeInput, // הוספת משך הזמן למשימה
         type_: "task"
     };
-    const request_ = new FXMLHttpRequest();
-    request_.open("POST", "url/task/post");
-    
-    request_.onload = function(data) {
-        console.log("Server Response:", this.response);
-        task.id=data
-    };
-    request_.onerror = function() {
-        if(JSON.parse(this.response).message=="timeout error"){
-            request_.send()
-        }
-        else(prompt(this.response))
-    };
-    
-    request_.send(task);
-    
+   const id=await addRequest(task)
     document.getElementById("taskTime").value = "";
     renderTask(task);
     input.value = "";
@@ -94,25 +97,28 @@ function removeTask(button, taskId) {
 
     button.parentElement.remove();
 }
-
-function loadTasksFromStorage() {
+function loadTasksRequest(currentUser){
+    return new Promise((resolve, reject) => {
+        const request_ = new FXMLHttpRequest();
+        request_.open("GET", "url/task/get/"+currentUser);
+        request_.onload = function(data) {
+            console.log("Server Response:", this.response);
+            console.log(data)
+            resolve(data)
+        };
+        request_.onerror = function() {
+            if(JSON.parse(this.response).message=="timeout error"){
+                request_.send()
+            }
+            else(prompt(this.response))
+        };
+        
+        request_.send();
+    });
+}
+async function loadTasksFromStorage() {
     const currentUser = localStorage.getItem("username");
-    const request_ = new FXMLHttpRequest();
-    request_.open("GET", "url/task/get/"+currentUser);
-    let tasks=[]
-    request_.onload = function(data) {
-        console.log("Server Response:", this.response);
-        console.log(data)
-        tasks=data
-    };
-    request_.onerror = function() {
-        if(JSON.parse(this.response).message=="timeout error"){
-            request_.send()
-        }
-        else(prompt(this.response))
-    };
-    
-    request_.send();
+    let tasks=await loadTasksRequest(currentUser)
     document.getElementById("taskList").innerHTML = ""; // ניקוי הרשימה
     tasks.forEach(task => renderTask(task));
 }

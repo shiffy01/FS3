@@ -66,7 +66,11 @@ export function deleteFromLocalStorage(id){
 export function getAllFromLocalStorage(){
     let items=[]
     for (let i = 0; i < localStorage.length; i++) {
-        items.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
+        let key = localStorage.key(i);
+        if (!isNaN(key)) {
+            items.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
+        }
     }
     return items
 }
+ 
