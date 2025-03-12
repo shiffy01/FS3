@@ -12,10 +12,10 @@ loginForm.addEventListener("submit", async function (event) {
 
     const username = usernameInput.value.trim();
     const password = document.getElementById("password").value.trim();
-      
+    let user; 
     // בדיקת פרטי המשתמש  
     try{
-        const user =  await getUser(username);
+         user =  await getUser(username);
 
     }
     catch{
