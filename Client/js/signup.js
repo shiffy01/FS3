@@ -34,7 +34,10 @@ const isUserExists = (username) => {
 const saveUser = (user) => {
     return new Promise((resolve, reject) => {
         const request_ = new FXMLHttpRequest();
-        request_.open("POST", "url/user/post");    
+        request_.open("POST", "url/user/post");  
+        request_.onload=function(){
+            resolve(this.response);
+        }  
         request_.onerror = function() {
             if(JSON.parse(this.response).message=="timeout error"){
                 request_.send(user)
@@ -91,7 +94,7 @@ form.addEventListener("submit", async (event) => {
 
     // יצירת משתמש חדש ושמירתו ב-localStorage
     const newUser = { name: username, password: password, type_: "user"};
-    saveUser(newUser);
+    await saveUser(newUser);
     localStorage.setItem("username", newUser.name);
 
     // הצגת הודעה והרשמה מוצלחת

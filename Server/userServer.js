@@ -17,7 +17,7 @@ export class UserServer{
          return this.user.getUser(id)
     }
     post(user){//add new user
-        id=updateId()
+        let id=updateId()
         saveToLocalStorage(id, user)
         return id
     }
